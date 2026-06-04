@@ -56,6 +56,7 @@
   const modalPrice = modal?.querySelector("[data-modal-price]");
   const modalDescription = modal?.querySelector("[data-modal-description]");
   const modalWhatsApp = modal?.querySelector("[data-modal-whatsapp]");
+  const modalSprite = modal?.querySelector("[data-modal-sprite]");
 
   const closeModal = () => modal?.classList.remove("open");
   document.querySelectorAll(".product-card").forEach(card => {
@@ -65,6 +66,9 @@
       modalName.textContent = name;
       modalPrice.textContent = card.dataset.price || "";
       modalDescription.textContent = card.dataset.description || "";
+      if (modalSprite && card.dataset.sprite) {
+        modalSprite.className = `product-sprite-modal ${card.dataset.sprite}`;
+      }
       modalWhatsApp.dataset.whatsapp = `Ola! Quero comprar o produto ${name}.`;
       modalWhatsApp.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(modalWhatsApp.dataset.whatsapp)}`;
       modal.classList.add("open");

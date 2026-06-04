@@ -298,6 +298,28 @@ button { color: inherit; }
 .product-card h3 { margin: 14px 0 4px; font-size: 1rem; font-weight: 500; text-transform: uppercase; }
 .product-card p { margin: 0; color: var(--ivory); font-size: .8rem; }
 
+.product-hero { background: linear-gradient(90deg, rgba(5,6,6,.95), rgba(5,6,6,.38)), url("../assets/images/produtos-premium.png") center 11% / cover; }
+.product-store { overflow: hidden; background: linear-gradient(180deg, #080909, #111313); }
+.product-store-top { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 38px; }
+.product-scroll-hint { color: var(--muted); font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; }
+.product-carousel { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(240px, 27%); gap: 14px; overflow-x: auto; padding: 4px 2px 28px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--gold) transparent; }
+.product-carousel .product-card { overflow: hidden; border: 1px solid rgba(201,168,94,.22); border-radius: 6px; background: #141616; scroll-snap-align: start; transition: transform .3s var(--ease), border-color .3s var(--ease); }
+.product-carousel .product-card:hover { transform: translateY(-5px); border-color: var(--gold); }
+.product-carousel .product-visual { aspect-ratio: 4/5; border: 0; border-radius: 0; background: #151616; }
+.product-sprite, .product-sprite-modal { width: 100%; height: 100%; background-image: url("../assets/images/produtos-premium.png"); background-repeat: no-repeat; background-size: 400% 200%; }
+.product-sprite.p1, .product-sprite-modal.p1 { background-position: 0% 0%; }
+.product-sprite.p2, .product-sprite-modal.p2 { background-position: 33.333% 0%; }
+.product-sprite.p3, .product-sprite-modal.p3 { background-position: 66.666% 0%; }
+.product-sprite.p4, .product-sprite-modal.p4 { background-position: 100% 0%; }
+.product-sprite.p5, .product-sprite-modal.p5 { background-position: 0% 100%; }
+.product-sprite.p6, .product-sprite-modal.p6 { background-position: 33.333% 100%; }
+.product-sprite.p7, .product-sprite-modal.p7 { background-position: 66.666% 100%; }
+.product-sprite.p8, .product-sprite-modal.p8 { background-position: 100% 100%; }
+.product-card-copy { padding: 16px; }
+.product-carousel .product-card h3 { min-height: 38px; margin: 0 0 7px; color: #eeeae0; font-size: .82rem; line-height: 1.4; }
+.product-carousel .product-card p { margin-bottom: 15px; color: var(--gold-light); font-family: var(--condensed); font-size: 1rem; }
+.product-carousel .product-card button { min-height: 36px; padding: 0 12px; border: 1px solid var(--line); color: var(--gold-light); background: transparent; font-size: .62rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+
 .community-collage { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; align-items: end; }
 .community-shot { position: relative; overflow: hidden; min-height: 280px; border: 1px solid var(--line); }
 .community-shot:nth-child(2), .community-shot:nth-child(5) { min-height: 360px; }
@@ -458,8 +480,9 @@ body.service-overlay-open { overflow: hidden; }
 .society-banner h2 { margin: 0; font-family: var(--serif); font-size: clamp(3rem, 7vw, 6.8rem); font-weight: 500; line-height: .9; text-transform: uppercase; }
 
 .product-modal-layout { display: grid; grid-template-columns: .7fr 1fr; gap: 24px; align-items: center; }
-.product-modal-visual { min-height: 220px; display: grid; place-items: center; background: radial-gradient(circle, #3c3d42, #18191b 72%); }
+.product-modal-visual { min-height: 300px; display: grid; place-items: center; overflow: hidden; background: #151616; }
 .product-modal-visual .product-jar { width: 42%; height: 130px; }
+.product-modal-visual .product-sprite-modal { min-height: 300px; }
 .product-modal-copy h2 { margin: 0 0 8px; font-family: var(--serif); font-size: 2.2rem; text-transform: uppercase; }
 
 .image-note { margin: 20px 0 0; color: #8d8e88; font-size: .68rem; line-height: 1.6; text-transform: uppercase; }
@@ -599,7 +622,7 @@ body.service-overlay-open { overflow: hidden; }
   .site-header { height: 68px; }
   .brand-mark { width: 98px; height: 42px; }
   .nav { top: 68px; }
-  .section { padding: 70px 0; }
+  .section { padding: 84px 0; }
   .title { font-size: clamp(3.25rem, 17vw, 5.5rem); }
   .section-title { font-size: clamp(2.8rem, 13vw, 4.4rem); }
   .campaign-hero { min-height: calc(100svh - 68px); }
@@ -608,11 +631,29 @@ body.service-overlay-open { overflow: hidden; }
   .campaign-actions .btn { width: 100%; }
   .statement { min-height: 70svh; }
   .feature-grid, .service-details, .tiers, .product-grid, .mosaic, .community-collage, .gallery-wall { grid-template-columns: 1fr; }
-  .feature-card { min-height: 520px; }
+  .feature-card { min-height: 68svh; }
   .service-detail { border-right: 0; border-bottom: 1px solid var(--line); }
   .service-detail:last-child { border-bottom: 0; }
   .tier.featured { transform: none; }
   .product-filter { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .lead { font-size: .92rem; line-height: 1.55; }
+  .section-head { margin-bottom: 30px; }
+  .statement p { max-width: 290px; line-height: 1.55; }
+  .feature-card-body p { min-height: 0; margin: 8px 0 16px; }
+  .product-hero { min-height: 58svh; background-position: 52% 8%; }
+  .product-store-top { align-items: start; margin-bottom: 24px; }
+  .product-scroll-hint { max-width: 90px; padding-top: 8px; text-align: right; line-height: 1.5; }
+  .product-carousel { margin-right: -14px; grid-auto-columns: 82%; gap: 12px; padding-bottom: 20px; }
+  .product-carousel .product-visual { aspect-ratio: 1/1.12; }
+  .product-card-copy { padding: 16px; }
+  .product-carousel .product-card h3 { min-height: 0; font-size: .86rem; }
+  .product-carousel .product-card button { min-height: 40px; }
+  .product-modal { padding: 8px; }
+  .product-modal .modal-card { padding: 14px; }
+  .product-modal-layout { gap: 16px; }
+  .product-modal-visual, .product-modal-visual .product-sprite-modal { min-height: 280px; }
+  .product-modal-copy h2 { font-size: 2rem; }
+  .product-modal-copy .lead { margin-bottom: 18px; }
   .gallery-frame, .gallery-frame:nth-child(even) { margin: 0; }
   .gallery-frame img { aspect-ratio: 4/5; }
   .community-shot, .community-shot:nth-child(2), .community-shot:nth-child(5) { min-height: 340px; }
