@@ -1,6 +1,7 @@
 (() => {
   const WHATSAPP_NUMBER = "5511982356076";
   const DEFAULT_WHATSAPP_MESSAGE = "Olá, vim pelo site e quero agendar um horário.";
+  const whatsappUrl = message => `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}&type=phone_number&app_absent=0`;
   const root = document.documentElement;
   const menuButton = document.querySelector(".menu-btn");
   const nav = document.querySelector(".nav");
@@ -19,9 +20,8 @@
 
   document.querySelectorAll("[data-whatsapp]").forEach(link => {
     const message = link.dataset.whatsapp || DEFAULT_WHATSAPP_MESSAGE;
-    link.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-    link.target = "_blank";
-    link.rel = "noopener";
+    link.href = whatsappUrl(message);
+    link.target = "_self";
   });
 
   const revealItems = document.querySelectorAll("[data-reveal]");
@@ -71,7 +71,7 @@
         modalSprite.className = `product-sprite-modal ${card.dataset.sprite}`;
       }
       modalWhatsApp.dataset.whatsapp = `Ola! Quero comprar o produto ${name}.`;
-      modalWhatsApp.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(modalWhatsApp.dataset.whatsapp)}`;
+      modalWhatsApp.href = whatsappUrl(modalWhatsApp.dataset.whatsapp);
       modal.classList.add("open");
     });
   });
@@ -92,7 +92,7 @@
     const message = `${DEFAULT_WHATSAPP_MESSAGE}\n\nNome: ${name}\nServiço: ${service}\nData desejada: ${date}`;
     const feedback = event.currentTarget.querySelector(".form-feedback");
     if (feedback) feedback.textContent = "Perfeito. Abrindo o WhatsApp para confirmar seu horario.";
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
+    window.location.assign(whatsappUrl(message));
   });
 
   document.querySelectorAll("[data-year]").forEach(item => {
