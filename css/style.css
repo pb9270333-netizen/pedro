@@ -516,7 +516,8 @@ body.service-overlay-open { overflow: hidden; }
 .crown-chat-launcher {
   position: fixed;
   z-index: 190;
-  right: 22px;
+  left: 22px;
+  right: auto;
   bottom: 22px;
   width: 76px;
   height: 76px;
@@ -541,7 +542,8 @@ body.service-overlay-open { overflow: hidden; }
 .crown-chat {
   position: fixed;
   z-index: 180;
-  right: 22px;
+  left: 22px;
+  right: auto;
   bottom: 112px;
   width: min(390px, calc(100vw - 28px));
   max-height: min(650px, calc(100svh - 120px));
@@ -556,7 +558,7 @@ body.service-overlay-open { overflow: hidden; }
   opacity: 0;
   visibility: hidden;
   transform: translateY(18px) scale(.96);
-  transform-origin: bottom right;
+  transform-origin: bottom left;
   transition: opacity .28s var(--ease), transform .28s var(--ease), visibility .28s;
 }
 .crown-chat.open { opacity: 1; visibility: visible; transform: none; }
