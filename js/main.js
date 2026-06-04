@@ -1,7 +1,7 @@
 (() => {
-  const WHATSAPP_NUMBER = "5511982356076";
+  const WHATSAPP_NUMBER = "5511948399275";
   const DEFAULT_WHATSAPP_MESSAGE = "Olá, vim pelo site e quero agendar um horário.";
-  const whatsappUrl = message => `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}&type=phone_number&app_absent=0`;
+  const whatsappUrl = message => `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
   const root = document.documentElement;
   const menuButton = document.querySelector(".menu-btn");
   const nav = document.querySelector(".nav");
@@ -166,7 +166,7 @@
       return "Acompanhe o trabalho de Wellington Baroni no Instagram: @ton.baroni.";
     }
     if (normalized.includes("telefone") || normalized.includes("whatsapp") || normalized.includes("contato")) {
-      return "Nosso telefone e WhatsApp oficial é 11 98235-6076.";
+      return "Nosso telefone e WhatsApp oficial é 11 94839-9275.";
     }
     if (normalized.includes("agendar") || normalized.includes("reserva")) {
       return "Perfeito. Vá para a página Agendar ou fale com nossa equipe pelo WhatsApp para reservar sua cadeira.";
@@ -174,7 +174,7 @@
     if (normalized.includes("barba")) {
       return "Fazemos barba, corte e barba, pigmentação e combo completo. A barba individual custa R$ 45.";
     }
-    return "Quero garantir a informação correta para você. Fale com nossa equipe no WhatsApp 11 98235-6076.";
+    return "Quero garantir a informação correta para você. Fale com nossa equipe no WhatsApp 11 94839-9275.";
   };
 
   chatLauncher.addEventListener("pointerdown", event => {
