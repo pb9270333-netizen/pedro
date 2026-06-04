@@ -1,5 +1,6 @@
 (() => {
-  const WHATSAPP_NUMBER = "5511999999999";
+  const WHATSAPP_NUMBER = "5511982356076";
+  const INSTAGRAM_URL = "https://www.instagram.com/ton.baroni/";
   const images = {
     design: "assets/images/corte-02.jpg",
     power: "assets/images/corte-01.jpg",
@@ -181,10 +182,10 @@
   const renderSuccess = () => {
     const message = bookingMessage();
     const calendarUrl = calendarLink();
-    content.innerHTML = `<section class="booking-success"><div class="booking-success-inner"><div class="booking-success-mark">✓</div><span class="eyebrow">Reserva registrada</span><h2>Seu horário está garantido.</h2><p>Agora é só chegar no horário e viver a experiência. Envie a confirmação para nossa equipe concluir o atendimento.</p><div class="booking-success-actions"><a class="btn btn-solid" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}" target="_blank" rel="noopener">Enviar no WhatsApp</a><a class="btn" href="${calendarUrl}" download="black-naipe-agendamento.ics">Adicionar ao calendário</a><a class="btn" href="index.html">Voltar para o início</a></div></div></section>`;
+    content.innerHTML = `<section class="booking-success"><div class="booking-success-inner"><div class="booking-success-mark">✓</div><span class="eyebrow">Reserva registrada</span><h2>Seu horário está garantido.</h2><p>Envie a confirmação para Wellington Baroni concluir o atendimento. Dúvidas: 11 98235-6076.</p><div class="booking-success-actions"><a class="btn btn-solid" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}" target="_blank" rel="noopener">Enviar no WhatsApp</a><a class="btn" href="${INSTAGRAM_URL}" target="_blank" rel="noopener">Ver Instagram</a><a class="btn" href="${calendarUrl}" download="black-naipe-agendamento.ics">Adicionar ao calendário</a><a class="btn" href="index.html">Voltar para o início</a></div></div></section>`;
   };
 
-  const bookingMessage = () => `Olá! Quero confirmar meu agendamento na The Black Naipe.\n\nServiço: ${state.service.name}\nData: ${longDate(state.date)}\nHorário: ${state.time}\nDuração: ${state.service.duration}\nValor: ${currency(state.service.price)}\nNome: ${state.client.name}\nWhatsApp: ${state.client.whatsapp}\nPreferências: ${state.preferences || "Não informado"}\nReferência: ${state.referenceFile || state.reference || "Não enviada"}\nPagamento: ${state.payment}`;
+  const bookingMessage = () => `Olá, vim pelo site e quero agendar um horário.\n\nServiço: ${state.service.name}\nData: ${longDate(state.date)}\nHorário: ${state.time}\nDuração: ${state.service.duration}\nValor: ${currency(state.service.price)}\nNome: ${state.client.name}\nWhatsApp: ${state.client.whatsapp}\nPreferências: ${state.preferences || "Não informado"}\nReferência: ${state.referenceFile || state.reference || "Não enviada"}\nPagamento: ${state.payment}`;
   const calendarLink = () => {
     const start = new Date(`${state.date}T${state.time}:00`);
     const hours = Number(state.service.duration.match(/(\d+)h/)?.[1]) || 0;

@@ -1,0 +1,9 @@
+{
+  "name": "the-black-naipe-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Site premium e responsivo da The Black Naipe.",
+  "scripts": {
+    "build": "C:\\Progra~1\\nodejs\\node.exe scripts/build.mjs"
+  }
+}

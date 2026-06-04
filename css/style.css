@@ -329,6 +329,8 @@ button { color: inherit; }
 .contact-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 64px; }
 .contact-panel { padding: 34px; border: 1px solid var(--line); background: rgba(255,255,255,.025); }
 .contact-list { display: grid; gap: 18px; margin: 28px 0; color: #c7c7c0; }
+.contact-list a { color: var(--ivory); text-decoration-color: rgba(201,168,94,.52); text-underline-offset: 4px; }
+.contact-list a:hover { color: var(--gold-light); }
 .booking-form { display: grid; gap: 14px; }
 .booking-form input, .booking-form select, .booking-form textarea {
   width: 100%;
@@ -629,6 +631,7 @@ body.service-overlay-open { overflow: hidden; }
   .campaign-copy { padding-bottom: 48px; }
   .campaign-actions { flex-direction: column; }
   .campaign-actions .btn { width: 100%; }
+  .contact-grid .actions .btn { width: 100%; }
   .statement { min-height: 70svh; }
   .feature-grid, .service-details, .tiers, .product-grid, .mosaic, .community-collage, .gallery-wall { grid-template-columns: 1fr; }
   .feature-card { min-height: 68svh; }

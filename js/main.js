@@ -1,5 +1,6 @@
 (() => {
-  const WHATSAPP_NUMBER = "5511999999999";
+  const WHATSAPP_NUMBER = "5511982356076";
+  const DEFAULT_WHATSAPP_MESSAGE = "Olá, vim pelo site e quero agendar um horário.";
   const root = document.documentElement;
   const menuButton = document.querySelector(".menu-btn");
   const nav = document.querySelector(".nav");
@@ -17,7 +18,7 @@
   });
 
   document.querySelectorAll("[data-whatsapp]").forEach(link => {
-    const message = link.dataset.whatsapp || "Ola! Quero conhecer a experiencia The Black Naipe.";
+    const message = link.dataset.whatsapp || DEFAULT_WHATSAPP_MESSAGE;
     link.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     link.target = "_blank";
     link.rel = "noopener";
@@ -88,7 +89,7 @@
     const name = form.get("nome") || "cliente";
     const service = form.get("servico") || "um atendimento";
     const date = form.get("data") || "a combinar";
-    const message = `Ola! Sou ${name}. Quero agendar ${service} para ${date}.`;
+    const message = `${DEFAULT_WHATSAPP_MESSAGE}\n\nNome: ${name}\nServiço: ${service}\nData desejada: ${date}`;
     const feedback = event.currentTarget.querySelector(".form-feedback");
     if (feedback) feedback.textContent = "Perfeito. Abrindo o WhatsApp para confirmar seu horario.";
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
@@ -161,13 +162,19 @@
     if (normalized.includes("local") || normalized.includes("onde") || normalized.includes("endereço")) {
       return "Estamos em São Paulo. Para garantir o endereço correto, fale com nossa equipe pelo WhatsApp.";
     }
+    if (normalized.includes("instagram") || normalized.includes("rede social")) {
+      return "Acompanhe o trabalho de Wellington Baroni no Instagram: @ton.baroni.";
+    }
+    if (normalized.includes("telefone") || normalized.includes("whatsapp") || normalized.includes("contato")) {
+      return "Nosso telefone e WhatsApp oficial é 11 98235-6076.";
+    }
     if (normalized.includes("agendar") || normalized.includes("reserva")) {
-      return "Perfeito. Use o botão AG no canto da tela ou vá para a página Agendar para reservar sua cadeira.";
+      return "Perfeito. Vá para a página Agendar ou fale com nossa equipe pelo WhatsApp para reservar sua cadeira.";
     }
     if (normalized.includes("barba")) {
       return "Fazemos barba, corte e barba, pigmentação e combo completo. A barba individual custa R$ 45.";
     }
-    return "Quero garantir a informação correta para você. Fale com nossa equipe pelo ícone do WhatsApp no canto esquerdo da tela.";
+    return "Quero garantir a informação correta para você. Fale com nossa equipe no WhatsApp 11 98235-6076.";
   };
 
   chatLauncher.addEventListener("pointerdown", event => {
