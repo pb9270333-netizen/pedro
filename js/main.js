@@ -1,10 +1,17 @@
 (() => {
-  const WHATSAPP_NUMBER = "5511948399275";
-  const DEFAULT_WHATSAPP_MESSAGE = "Olá, vim pelo site e quero agendar um horário.";
-  const whatsappUrl = message => `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  const siteData = window.BlackNaipeData || {};
+  const brand = siteData.brand || {};
+  const WHATSAPP_NUMBER = brand.whatsappNumber || "5511948399275";
+  const DEFAULT_WHATSAPP_MESSAGE = brand.whatsappMessage || "Olá, vim pelo site e quero agendar um horário.";
+  const INSTAGRAM_URL = brand.instagramUrl || "https://www.instagram.com/ton.baroni/";
+  const whatsappUrl = message => `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message || DEFAULT_WHATSAPP_MESSAGE)}`;
   const root = document.documentElement;
   const menuButton = document.querySelector(".menu-btn");
   const nav = document.querySelector(".nav");
+  const currency = value => typeof value === "number"
+    ? new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 0 }).format(value)
+    : value;
+  const escapeHtml = value => String(value || "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" })[char]);
 
   menuButton?.addEventListener("click", () => {
     const open = root.classList.toggle("menu-open");
@@ -18,11 +25,97 @@
     }
   });
 
-  document.querySelectorAll("[data-whatsapp]").forEach(link => {
-    const message = link.dataset.whatsapp || DEFAULT_WHATSAPP_MESSAGE;
-    link.href = whatsappUrl(message);
-    link.target = "_self";
-  });
+  const applyWhatsappLinks = () => {
+    document.querySelectorAll("[data-whatsapp]").forEach(link => {
+      const message = link.dataset.whatsapp || DEFAULT_WHATSAPP_MESSAGE;
+      link.href = whatsappUrl(message);
+      link.target = "_self";
+    });
+  };
+
+  const renderPlans = () => {
+    const grid = document.querySelector("[data-plans-grid]");
+    if (!grid || !siteData.plans?.length) return;
+    grid.innerHTML = siteData.plans.map((plan, index) => `
+      <article class="tier ${plan.featured ? "featured" : ""}" data-reveal>
+        <div class="membership-card">
+          <div>
+            <span class="eyebrow">${plan.featured ? "Mais escolhido" : `Sociedade 0${index + 1}`}</span>
+            <strong>${escapeHtml(plan.name)}</strong>
+          </div>
+        </div>
+        <div class="tier-price">${escapeHtml(plan.price)}</div>
+        <ul>${plan.items.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+        <a class="btn ${plan.featured ? "btn-solid" : ""}" href="${whatsappUrl(`Olá! Quero entrar no plano ${plan.name} da The Black Naipe.`)}">Entrar no clube</a>
+      </article>`).join("");
+  };
+
+  const renderProducts = () => {
+    const carousel = document.querySelector("[data-products-grid]");
+    if (!carousel || !siteData.products?.length) return;
+    carousel.innerHTML = siteData.products.map(product => `
+      <article class="product-card" data-name="${escapeHtml(product.name)}" data-price="${escapeHtml(product.price)}" data-description="${escapeHtml(product.benefit)}" data-sprite="${escapeHtml(product.sprite)}" data-reveal>
+        <div class="product-visual"><div class="product-sprite ${escapeHtml(product.sprite)}" role="img" aria-label="${escapeHtml(product.name)}"></div></div>
+        <div class="product-card-copy">
+          <h3>${escapeHtml(product.name)}</h3>
+          <p>${escapeHtml(product.price)}</p>
+          <button type="button">Ver produto</button>
+        </div>
+      </article>`).join("");
+  };
+
+  const renderGallery = () => {
+    const gallery = document.querySelector("[data-album-gallery]");
+    if (!gallery || !siteData.gallery?.length) return;
+    gallery.innerHTML = siteData.gallery.map((item, index) => `
+      <figure class="gallery-frame album-frame" data-reveal>
+        <img decoding="async" loading="lazy" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}">
+        <figcaption><small>${String(index + 1).padStart(2, "0")}</small><span>${escapeHtml(item.title)}</span></figcaption>
+      </figure>`).join("");
+  };
+
+  const renderStyleProfile = () => {
+    const target = document.querySelector("[data-style-profile]");
+    if (!target || !siteData.styleProfile) return;
+    const profile = siteData.styleProfile;
+    target.innerHTML = `
+      <div class="style-profile-card" data-reveal>
+        <div>
+          <span class="eyebrow">Meu Estilo</span>
+          <h2 class="section-title">Sua cadeira<br><span class="gold">lembra você.</span></h2>
+          <p class="lead">Um perfil simples para repetir o que funciona e evoluir o visual sem explicar tudo de novo.</p>
+        </div>
+        <div class="style-profile-grid">
+          <div><span>Último corte</span><strong>${escapeHtml(profile.lastCut)}</strong></div>
+          <div><span>Corte favorito</span><strong>${escapeHtml(profile.favoriteCut)}</strong></div>
+          <div><span>Barbeiro</span><strong>${escapeHtml(profile.favoriteBarber)}</strong></div>
+          <div><span>Frequência</span><strong>${escapeHtml(profile.frequency)}</strong></div>
+        </div>
+        <div class="style-profile-note"><span>Notas do barbeiro</span><p>${escapeHtml(profile.notes)}</p><strong>${escapeHtml(profile.nextSuggestion)}</strong></div>
+        <a class="btn btn-solid" href="${whatsappUrl("Olá, quero agendar mantendo meu estilo Black Naipe.")}">Agendar meu estilo</a>
+      </div>`;
+  };
+
+  const renderBottomNav = () => {
+    if (document.querySelector(".mobile-bottom-nav")) return;
+    const path = location.pathname.split("/").pop() || "index.html";
+    const active = file => path === file ? "active" : "";
+    document.body.insertAdjacentHTML("beforeend", `
+      <nav class="mobile-bottom-nav" aria-label="Ações rápidas">
+        <a class="${active("index.html")}" href="index.html"><span>Início</span></a>
+        <a class="${active("servicos.html")}" href="servicos.html"><span>Cortes</span></a>
+        <a class="${active("contato.html")}" href="contato.html"><span>Agenda</span></a>
+        <a class="${active("planos.html")}" href="planos.html"><span>Planos</span></a>
+        <a class="whatsapp" href="${whatsappUrl(DEFAULT_WHATSAPP_MESSAGE)}"><span>WhatsApp</span></a>
+      </nav>`);
+  };
+
+  renderPlans();
+  renderProducts();
+  renderGallery();
+  renderStyleProfile();
+  renderBottomNav();
+  applyWhatsappLinks();
 
   const revealItems = document.querySelectorAll("[data-reveal]");
   if ("IntersectionObserver" in window) {
@@ -70,7 +163,7 @@
       if (modalSprite && card.dataset.sprite) {
         modalSprite.className = `product-sprite-modal ${card.dataset.sprite}`;
       }
-      modalWhatsApp.dataset.whatsapp = `Ola! Quero comprar o produto ${name}.`;
+      modalWhatsApp.dataset.whatsapp = `Olá! Quero comprar o produto ${name}.`;
       modalWhatsApp.href = whatsappUrl(modalWhatsApp.dataset.whatsapp);
       modal.classList.add("open");
     });
@@ -91,13 +184,17 @@
     const date = form.get("data") || "a combinar";
     const message = `${DEFAULT_WHATSAPP_MESSAGE}\n\nNome: ${name}\nServiço: ${service}\nData desejada: ${date}`;
     const feedback = event.currentTarget.querySelector(".form-feedback");
-    if (feedback) feedback.textContent = "Perfeito. Abrindo o WhatsApp para confirmar seu horario.";
+    if (feedback) feedback.textContent = "Perfeito. Abrindo o WhatsApp para confirmar seu horário.";
     window.location.assign(whatsappUrl(message));
   });
 
   document.querySelectorAll("[data-year]").forEach(item => {
     item.textContent = new Date().getFullYear();
   });
+
+  const lowestService = siteData.services?.reduce((min, service) => service.price < min.price ? service : min, siteData.services[0]);
+  const featuredPlan = siteData.plans?.find(plan => plan.featured) || siteData.plans?.[0];
+  const barber = siteData.barbers?.[0];
 
   const chatMarkup = `
     <button class="crown-chat-launcher" type="button" aria-label="Abrir concierge Black Naipe" aria-expanded="false">
@@ -151,30 +248,33 @@
   const replyTo = question => {
     const normalized = question.toLocaleLowerCase("pt-BR");
     if (normalized.includes("preço") || normalized.includes("valor") || normalized.includes("corte")) {
-      return "O corte custa R$ 50. Corte e barba sai por R$ 80, e o combo completo por R$ 90. Posso levar você ao menu de serviços.";
+      const serviceList = (siteData.services || []).slice(0, 4).map(service => `${service.name}: ${currency(service.price)}`).join("; ");
+      return serviceList ? `Os principais valores são: ${serviceList}. O ${lowestService?.name || "atendimento"} começa em ${currency(lowestService?.price || 0)}. Posso te levar para reservar agora.` : "Quero garantir a informação correta para você. Fale com nossa equipe no WhatsApp.";
     }
-    if (normalized.includes("plano") || normalized.includes("sociedade")) {
-      return "Temos os planos Bronze, Ouro e Preto, com benefícios de R$ 79 a R$ 249 por mês.";
+    if (normalized.includes("plano") || normalized.includes("clube") || normalized.includes("sociedade")) {
+      const planList = (siteData.plans || []).map(plan => `${plan.name} ${plan.price}`).join("; ");
+      return planList ? `Os planos do clube são: ${planList}. O mais escolhido hoje é o ${featuredPlan?.name}.` : "Temos planos mensais. Fale com a equipe para escolher o melhor.";
     }
     if (normalized.includes("horário") || normalized.includes("funciona")) {
-      return "Atendemos de terça a sábado, das 9h às 20h.";
+      return `Atendemos ${brand.hours || "de terça a sábado, das 9h às 20h"}.`;
     }
     if (normalized.includes("local") || normalized.includes("onde") || normalized.includes("endereço")) {
-      return "Estamos em São Paulo. Para garantir o endereço correto, fale com nossa equipe pelo WhatsApp.";
+      return `Estamos em ${brand.address || "São Paulo, SP"}. Para receber o endereço certinho e confirmar a cadeira, fale pelo WhatsApp.`;
     }
     if (normalized.includes("instagram") || normalized.includes("rede social")) {
-      return "Acompanhe o trabalho de Wellington Baroni no Instagram: @ton.baroni.";
+      return `Acompanhe ${barber?.name || "Wellington Baroni"} no Instagram: ${brand.instagram || "@ton.baroni"}.`;
     }
     if (normalized.includes("telefone") || normalized.includes("whatsapp") || normalized.includes("contato")) {
-      return "Nosso telefone e WhatsApp oficial é 11 94839-9275.";
+      return `Nosso WhatsApp oficial é ${brand.phoneDisplay || "11 94839-9275"}.`;
     }
     if (normalized.includes("agendar") || normalized.includes("reserva")) {
-      return "Perfeito. Vá para a página Agendar ou fale com nossa equipe pelo WhatsApp para reservar sua cadeira.";
+      return "Perfeito. Em um toque você fala com a equipe e confirma sua cadeira pelo WhatsApp.";
     }
     if (normalized.includes("barba")) {
-      return "Fazemos barba, corte e barba, pigmentação e combo completo. A barba individual custa R$ 45.";
+      const barba = siteData.services?.find(service => service.name.toLowerCase().includes("barba"));
+      return barba ? `Fazemos ${barba.name}. O valor é ${currency(barba.price)} e a duração média é ${barba.duration}.` : "Fazemos barba e combos com corte. Posso te encaminhar para o WhatsApp.";
     }
-    return "Quero garantir a informação correta para você. Fale com nossa equipe no WhatsApp 11 94839-9275.";
+    return "Quero garantir a informação correta para você. Fale com nossa equipe no WhatsApp, Instagram ou ligação para atendimento humano.";
   };
 
   chatLauncher.addEventListener("pointerdown", event => {
